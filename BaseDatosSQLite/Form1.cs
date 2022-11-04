@@ -93,7 +93,29 @@ namespace BaseDatosSQLite
             }
             catch(Exception)
             {
-                Console.WriteLine("No se pudo insertar la información");
+                Console.WriteLine("No se pudo insertar la información.");
+                return;
+            }
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            var conn = new SQLiteConnection(cs);
+            conn.Open();
+            var cmd = new SQLiteCommand(conn);
+            try
+            {
+                cmd.CommandText = "UPDATE test set name=@Name where id=@Id";
+                cmd.Prepare();
+                cmd.Parameters.AddWithValue("@Name", textBox1.Text);
+                cmd.Parameters.AddWithValue("@Id", textBox2.Text);
+
+                cmd.ExecuteNonQuery();
+                dataGridView1.Rows.Clear();
+                data_show();
+            }catch(Exception)
+            {
+                Console.WriteLine("No se pudo actualizar la información.");
                 return;
             }
         }
