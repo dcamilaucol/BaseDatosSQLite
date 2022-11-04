@@ -68,5 +68,34 @@ namespace BaseDatosSQLite
                 dataGridView1.Rows.Insert(0, dr.GetString(0), dr.GetString(1));
             }
         }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            var conn = new SQLiteConnection(cs);
+            conn.Open();
+            var cmd = new SQLiteCommand(conn);
+            try
+            {
+                cmd.CommandText = "INSERT INTO test(name,id) VALUES(@name, @id)";
+
+                string NAME = textBox1.Text;
+                string ID = textBox2.Text;
+                cmd.Parameters.AddWithValue("@name", NAME);
+                cmd.Parameters.AddWithValue("@id", ID);
+
+                dataGridView1.ColumnCount = 2;
+                dataGridView1.Columns[0].Name = "Nombre";
+                dataGridView1.Columns[1].Name = "Id";
+                string[] row = new string[] { NAME, ID };
+                dataGridView1.Rows.Add(row);
+                cmd.ExecuteNonQuery();
+
+            }
+            catch(Exception)
+            {
+                Console.WriteLine("No se pudo insertar la información");
+                return;
+            }
+        }
     }
 }
