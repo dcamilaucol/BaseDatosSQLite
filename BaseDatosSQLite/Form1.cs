@@ -50,7 +50,7 @@ namespace BaseDatosSQLite
             }
             else
             {
-                Console.WriteLine("La base de datos no se puede crear");
+                Console.WriteLine("La base de datos no se puede crear.");
                 return;
             }
         }
@@ -117,6 +117,27 @@ namespace BaseDatosSQLite
             {
                 Console.WriteLine("No se pudo actualizar la información.");
                 return;
+            }
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            var conn = new SQLiteConnection(cs);
+            conn.Open();
+            var cmd = new SQLiteCommand(conn);
+            try
+            {
+                cmd.CommandText = "DELETE FROM test WHERE name=@Name";
+                cmd.Prepare();
+                cmd.Parameters.AddWithValue("@Name", textBox1.Text);
+
+                cmd.ExecuteNonQuery();
+                dataGridView1.Rows.Clear();
+                data_show();
+
+            }catch(Exception)
+            {
+                Console.WriteLine("No se pudo eliminar la información.");
             }
         }
     }
